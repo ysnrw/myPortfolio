@@ -1667,7 +1667,7 @@
     <section class="contact" id="contact">
         <h2 class="heading">Contact <span>Me</span></h2>
       
-        <form id="whatsapp-form">
+        <form id="email-form">
             <div class="input-box">
                 <div class="input-field">
                 <input type="text" id="full-name" name="full-name" required>
@@ -2040,26 +2040,21 @@
             logo.style.animation = '';
         });
 
-        // WhatsApp Form Submission
-        document.getElementById('whatsapp-form').addEventListener('submit', function (e) {
+        document.getElementById('email-form').addEventListener('submit', function (e) {
             e.preventDefault();
-        
+
             const name = document.getElementById('full-name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
-            const subject = document.getElementById('subject').value;
+            const subject = encodeURIComponent(document.getElementById('subject').value);
             const message = document.getElementById('message').value;
-        
-            const whatsappNumber = '6281212014518';
-        
-            const text = `*Contact Form Message*%0A
-            *Name:* ${name}%0A
-            *Email:* ${email}%0A
-            *Phone:* ${phone}%0A
-            *Subject:* ${subject}%0A
-            *Message:* ${message}`;
-      
-            const url = `https://wa.me/${whatsappNumber}?text=${text}`;
+
+            const body = encodeURIComponent(
+            `Full Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`
+            );
+
+            const url = `mailto:yusufnurwahid29@gmail.com?subject=${subject}&body=${body}`;
+
             window.open(url, '_blank');
         });
     </script>
