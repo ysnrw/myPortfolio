@@ -1,50 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import { Link as RouterLink } from 'react-router-dom';
 
 const Header = ({ isDarkMode, toggleTheme }) => {
   const [menuActive, setMenuActive] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
   const [lastScroll, setLastScroll] = useState(0);
-
+  const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef(null);
 
   useEffect(() => {
-    const handleHeaderVisibility = () => {
-      const currentScroll = window.pageYOffset;
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      setIsScrolled(currentScroll > 10);
+
       if (currentScroll <= 0) {
         setHeaderHidden(false);
-        return;
-      }
-      if (currentScroll > lastScroll && !headerHidden) {
+      } else if (currentScroll > lastScroll && !headerHidden) {
         setHeaderHidden(true);
       } else if (currentScroll < lastScroll && headerHidden) {
         setHeaderHidden(false);
       }
       setLastScroll(currentScroll);
     };
-
-    window.addEventListener('scroll', handleHeaderVisibility);
-    return () => window.removeEventListener('scroll', handleHeaderVisibility);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScroll, headerHidden]);
 
   useEffect(() => {
     if (!menuActive) return;
-
-    const closeMenu = () => {
-      setMenuActive(false);
-    };
-
+    const closeMenu = () => setMenuActive(false);
     const handleClickOutside = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
         closeMenu();
       }
     };
-
     window.addEventListener('scroll', closeMenu);
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       window.removeEventListener('scroll', closeMenu);
       document.removeEventListener('mousedown', handleClickOutside);
@@ -52,8 +45,11 @@ const Header = ({ isDarkMode, toggleTheme }) => {
   }, [menuActive]);
 
   return (
-    <header ref={headerRef} className={headerHidden ? 'hide' : ''}>
-      <RouterLink to="/" className="logo">YS</RouterLink>
+    <header 
+      ref={headerRef} 
+      className={`${headerHidden ? 'hide' : ''} ${isScrolled ? 'scrolled' : ''}`}
+    >
+      <Link to="/" className="logo" onClick={() => setMenuActive(false)}>YS</Link>
 
       <div className={`menu-toggle ${menuActive ? 'active' : ''}`} onClick={() => setMenuActive(!menuActive)}>
         <span></span>
@@ -62,12 +58,12 @@ const Header = ({ isDarkMode, toggleTheme }) => {
       </div>
 
       <nav className={`navbar ${menuActive ? 'active' : ''}`}>
-        <a href="/#home">Home</a>
-        <a href="/#about">About</a>
-        <a href="/#skills">Skills</a>
-        <a href="/#portfolio">Portfolio</a>
-        <a href="/#contact">Contact</a>
-
+        <Link className="nav-link" to="/#home" onClick={() => setMenuActive(false)}>Home</Link>
+        <Link className="nav-link" to="/#about" onClick={() => setMenuActive(false)}>About</Link>
+        <Link className="nav-link" to="/#skills" onClick={() => setMenuActive(false)}>Skills</Link>
+        <Link className="nav-link" to="/#portfolio" onClick={() => setMenuActive(false)}>Portfolio</Link>
+        <Link className="nav-link" to="/#contact" onClick={() => setMenuActive(false)}>Contact</Link>
+        
         <div className="theme-toggle" onClick={toggleTheme}>
           <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} style={{ color: isDarkMode ? '#f8f9fa' : '#212529', position: 'absolute', top: '50%', left: '-25px', transform: 'translateY(-50%)' }} />
           <div className="theme-toggle-ball"></div>

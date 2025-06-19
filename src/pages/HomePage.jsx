@@ -13,7 +13,10 @@ import Footer from '../components/Footer';
 const HomePage = ({ isDarkMode, toggleTheme }) => {
   const location = useLocation();
   useEffect(() => {
-    const sectionToScroll = location.state?.scrollTo;
+    const sectionFromState = location.state?.scrollTo;
+    const sectionFromHash = location.hash.substring(1);
+    
+    const sectionToScroll = sectionFromState || sectionFromHash;
 
     if (sectionToScroll) {
       setTimeout(() => {
@@ -21,7 +24,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
           duration: 800,
           delay: 0,
           smooth: 'easeInOutQuart',
-          offset: -100
+          offset: -100 
         });
       }, 100);
     }
