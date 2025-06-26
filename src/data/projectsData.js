@@ -17,7 +17,7 @@ import project3Detail2 from '../assets/img/project3Detail2.png';
 import project3Detail3 from '../assets/img/project3Detail3.png';
 import project4 from '../assets/img/project4.png';
 import project4Detail1 from '../assets/img/project4Detail1.png';
-import project4Detail2 from '../assets/img/project4Detail1.png';
+import project4Detail2 from '../assets/img/project4Detail2.png';
 
 export const projectsData = [
   {
